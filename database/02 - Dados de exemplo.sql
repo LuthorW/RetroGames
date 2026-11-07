@@ -1,13 +1,5 @@
 -- =====================================================================
 -- RetroGames — Etapa 4: dados de exemplo
--- Referência: Especificação "RetroGames — Arquitetura e Stack", 4.2
---
--- Executar LOGO DEPOIS do 01_criar_tabelas.sql, num banco recém-criado.
--- As chaves co_seq_ são geradas em ordem (1, 2, 3...) a partir do banco
--- vazio; por isso tb_jogo e tb_jogo_genero usam esses números.
---
--- Não há INSERT em tb_usuario: o administrador será criado pela API,
--- na aula de autenticação.
 -- =====================================================================
 
 USE retrogames;

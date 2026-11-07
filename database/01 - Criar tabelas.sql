@@ -1,13 +1,5 @@
 -- =====================================================================
 -- RetroGames — Etapa 3: criação do banco e das tabelas
--- Referência: Especificação "RetroGames — Arquitetura e Stack", 4.1 a 4.3
---
--- O banco guarda apenas a estrutura: PK, FK (comportamento padrão),
--- tipos, NOT NULL e UNIQUE. Sem trigger, function, CHECK ou ações
--- referenciais (ON DELETE CASCADE / SET NULL).
---
--- ATENÇÃO: a primeira linha apaga o banco retrogames, se existir.
--- Isso permite recriar tudo do zero (item "Confira" da etapa 3).
 -- =====================================================================
 
 DROP DATABASE IF EXISTS retrogames;
