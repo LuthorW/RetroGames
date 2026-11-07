@@ -97,15 +97,12 @@ LIMIT 5 OFFSET 5;
 
 -- =====================================================================
 -- PARTE 2 — TESTES DE INTEGRIDADE
--- Execute UM POR VEZ (cursor na linha + Ctrl+Enter) e anote, no
--- comentário "Resultado obtido", o código e a mensagem que apareceram
--- na aba Output do Workbench.
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
 -- Teste 1: inserir jogo com co_plataforma inexistente (999)
 -- Resultado esperado: Erro 1452 (chave estrangeira)
--- Resultado obtido:
+-- Resultado obtido: MySQL Error (1452): Cannot add or update a child row: a foreign key constraint fails
 -- ---------------------------------------------------------------------
 INSERT INTO tb_jogo
     (no_jogo, ds_jogo, nu_ano_lancamento, vl_preco, qt_estoque, st_ativo, dt_cadastro, co_plataforma, co_condicao_jogo)
@@ -115,7 +112,7 @@ VALUES
 -- ---------------------------------------------------------------------
 -- Teste 2: inserir plataforma com nome já cadastrado
 -- Resultado esperado: Erro 1062 (UNIQUE)
--- Resultado obtido:
+-- Resultado obtido: MySQL Error (1062): Duplicate entry 'Mega Drive' for key 'tb_plataforma.uk_plataforma_no'
 -- ---------------------------------------------------------------------
 INSERT INTO tb_plataforma (no_plataforma, no_fabricante, nu_ano_lancamento)
 VALUES ('Mega Drive', 'Sega', 1988);
@@ -123,14 +120,14 @@ VALUES ('Mega Drive', 'Sega', 1988);
 -- ---------------------------------------------------------------------
 -- Teste 3: excluir plataforma que possui jogos (1 = NES)
 -- Resultado esperado: Erro 1451 (chave estrangeira)
--- Resultado obtido:
+-- Resultado obtido: MySQL Error (1451): Cannot delete or update a parent row: a foreign key constraint fails 
 -- ---------------------------------------------------------------------
 DELETE FROM tb_plataforma WHERE co_seq_plataforma = 1;
 
 -- ---------------------------------------------------------------------
 -- Teste 4: inserir jogo com no_jogo nulo
 -- Resultado esperado: Erro 1048 (NOT NULL)
--- Resultado obtido:
+-- Resultado obtido: MySQL Error (1048): Column 'no_jogo' cannot be null
 -- ---------------------------------------------------------------------
 INSERT INTO tb_jogo
     (no_jogo, ds_jogo, nu_ano_lancamento, vl_preco, qt_estoque, st_ativo, dt_cadastro, co_plataforma, co_condicao_jogo)
@@ -140,7 +137,7 @@ VALUES
 -- ---------------------------------------------------------------------
 -- Teste 5: inserir jogo com vl_preco igual a 0
 -- Resultado esperado: Aceito — a regra fica no Service (RN06)
--- Resultado obtido:
+-- Resultado obtido: OK, 1 row affected in 4.193ms
 -- ---------------------------------------------------------------------
 INSERT INTO tb_jogo
     (no_jogo, ds_jogo, nu_ano_lancamento, vl_preco, qt_estoque, st_ativo, dt_cadastro, co_plataforma, co_condicao_jogo)
@@ -155,7 +152,7 @@ VALUES
 SET @co_jogo_teste = (SELECT co_seq_jogo FROM tb_jogo WHERE no_jogo = 'Teste preço zero');
 DELETE FROM tb_jogo WHERE co_seq_jogo = @co_jogo_teste;
 
--- Conferência: deve voltar 23 jogos, 8 plataformas e nenhum "Teste"
+-- Conferência
 SELECT
     (SELECT COUNT(*) FROM tb_jogo)                            AS qt_jogos,
     (SELECT COUNT(*) FROM tb_plataforma)                      AS qt_plataformas,
