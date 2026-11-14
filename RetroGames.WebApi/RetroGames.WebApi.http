@@ -1,6 +1,4 @@
-@RetroGames.WebApi_HostAddress = http://localhost:5134
+@RetroGames.WebApi_HostAddress = http://localhost:5080
 
-GET {{RetroGames.WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
+# As rotas da API entram nas próximas etapas. Para testar, use o Swagger:
+# http://localhost:5080/swagger
