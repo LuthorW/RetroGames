@@ -33,6 +33,10 @@ if (string.IsNullOrWhiteSpace(emailAdministrador) || string.IsNullOrWhiteSpace(s
 builder.Services.AddRepositorios(connectionString);
 builder.Services.AddServicosDeNegocio();
 
+// Sessão por cookie (login) e autorização ([Authorize])
+builder.Services.AddAutenticacao();
+builder.Services.AddAuthorization();
+
 // Controllers, com o filtro de validação valendo para todas as actions.
 builder.Services
     .AddControllers(opcoes => opcoes.Filters.Add<FluentValidationFilter>())
@@ -92,6 +96,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwaggerUI(opcoes => opcoes.SwaggerEndpoint("/openapi/v1.json", "RetroGames API"));
 }
+
+// Quem é o usuário (lê o cookie de sessão) e, depois, o que ele pode fazer. Nessa ordem.
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
