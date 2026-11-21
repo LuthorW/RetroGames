@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using RetroGames.Model.Model;
 using RetroGames.Repository;
 using RetroGames.Services;
 
@@ -23,6 +25,7 @@ public static class InjecaoDependenciaConfig
         services.AddScoped<IJogoGeneroRepository, JogoGeneroRepository>();
         services.AddScoped<IGeneroRepository, GeneroRepository>();
         services.AddScoped<ICondicaoJogoRepository, CondicaoJogoRepository>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IRepositorySet, RepositorySet>();
 
         return services;
@@ -37,6 +40,10 @@ public static class InjecaoDependenciaConfig
         services.AddScoped<IGeneroService, GeneroService>();
         services.AddScoped<ICondicaoJogoService, CondicaoJogoService>();
         services.AddScoped<IJogoService, JogoService>();
+        services.AddScoped<IAutenticacaoService, AutenticacaoService>();
+
+        // Gera e confere o hash das senhas (PBKDF2 com salt). Não guarda estado: uma instância basta.
+        services.AddSingleton<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 
         return services;
     }

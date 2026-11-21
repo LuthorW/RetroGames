@@ -1,6 +1,7 @@
 using FluentValidation;
 using RetroGames.WebApi.Configuration;
 using RetroGames.WebApi.Filters;
+using RetroGames.Services;
 using RetroGames.WebApi.Middlewares;
 
 // Carrega o .env (procurando a partir da pasta atual e subindo até a raiz do
@@ -16,6 +17,16 @@ if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException(
         "Connection string não encontrada. Crie o arquivo .env na raiz do repositório " +
         "(copie o .env.example) com a linha ConnectionStrings__Default=\"...\".");
+}
+
+// Administrador inicial: e-mail e senha vêm do .env (AdminInicial__Email e AdminInicial__Senha).
+var emailAdministrador = builder.Configuration["AdminInicial:Email"];
+var senhaAdministrador = builder.Configuration["AdminInicial:Senha"];
+if (string.IsNullOrWhiteSpace(emailAdministrador) || string.IsNullOrWhiteSpace(senhaAdministrador))
+{
+    throw new InvalidOperationException(
+        "Administrador inicial não configurado. Acrescente ao .env, na raiz do repositório, " +
+        "as linhas AdminInicial__Email=\"...\" e AdminInicial__Senha=\"...\".");
 }
 
 // Injeção de dependência
@@ -62,6 +73,14 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+
+// Cria o administrador inicial, se ainda não houver nenhum. Os Services são "scoped"
+// (um por requisição); fora de uma requisição, é preciso abrir um escopo à mão.
+using (var escopo = app.Services.CreateScope())
+{
+    var autenticacaoService = escopo.ServiceProvider.GetRequiredService<IAutenticacaoService>();
+    await autenticacaoService.GarantirAdministradorInicialAsync(emailAdministrador, senhaAdministrador);
+}
 
 // Pipeline: por onde toda requisição passa.
 // Primeira etapa: captura qualquer exceção das etapas seguintes.

@@ -4,7 +4,7 @@ namespace RetroGames.Repository;
 /// Conjunto de repositórios: um único objeto que dá acesso a todos.
 /// Na aula 3, o Service recebe este objeto e usa
 /// repositorio.Plataforma, repositorio.Jogo, repositorio.JogoGenero,
-/// repositorio.Genero e repositorio.CondicaoJogo.
+/// repositorio.Genero, repositorio.CondicaoJogo e repositorio.Usuario.
 /// </summary>
 public interface IRepositorySet
 {
@@ -13,4 +13,5 @@ public interface IRepositorySet
     IJogoGeneroRepository JogoGenero { get; }
     IGeneroRepository Genero { get; }
     ICondicaoJogoRepository CondicaoJogo { get; }
+    IUsuarioRepository Usuario { get; }
 }
