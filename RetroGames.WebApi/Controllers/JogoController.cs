@@ -49,4 +49,53 @@ public class JogoController : ControllerBase
             Data = detalhe.ParaListarPorIdResponse(),
         });
     }
+
+    /// <summary>Inclui um jogo com os seus gêneros. Responde 201, com o cabeçalho Location.</summary>
+    [HttpPost]
+    public async Task<ActionResult<RetroGamesResponseApiModel<ListarPorIdJogoResponseApiModel>>> Inserir(
+        InserirJogoRequestApiModel request)
+    {
+        var criado = await _jogoService.InserirAsync(request.ParaModel(), request.IdsGeneros);
+
+        // Devolve o jogo completo (com nomes da plataforma, condição e gêneros).
+        var detalhe = await _jogoService.BuscarPorIdAsync(criado.Id);
+
+        return CreatedAtAction(nameof(ListarPorId), new { id = criado.Id },
+            new RetroGamesResponseApiModel<ListarPorIdJogoResponseApiModel>
+            {
+                ResponseCode = ResponseCodes.SUCESSO,
+                Data = detalhe.ParaListarPorIdResponse(),
+            });
+    }
+
+    /// <summary>Altera um jogo (recurso completo, inclusive gêneros e situação). Responde 200.</summary>
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<RetroGamesResponseApiModel<ListarPorIdJogoResponseApiModel>>> Alterar(
+        int id, AlterarJogoRequestApiModel request)
+    {
+        await _jogoService.AlterarAsync(request.ParaModel(id), request.IdsGeneros);
+
+        var detalhe = await _jogoService.BuscarPorIdAsync(id);
+
+        return Ok(new RetroGamesResponseApiModel<ListarPorIdJogoResponseApiModel>
+        {
+            ResponseCode = ResponseCodes.SUCESSO,
+            Data = detalhe.ParaListarPorIdResponse(),
+        });
+    }
+
+    /// <summary>
+    /// Desativa um jogo (exclusão lógica, RN03): o registro fica no banco com
+    /// st_ativo = FALSE. Responde 200 com o envelope (a API não usa 204).
+    /// </summary>
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult<RetroGamesResponseApiModel<object>>> Desativar(int id)
+    {
+        await _jogoService.DesativarAsync(id);
+
+        return Ok(new RetroGamesResponseApiModel<object>
+        {
+            ResponseCode = ResponseCodes.SUCESSO,
+        });
+    }
 }

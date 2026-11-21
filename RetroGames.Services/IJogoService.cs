@@ -23,7 +23,10 @@ public interface IJogoService
     /// <summary>Grava o jogo (ativo) e os seus gêneros numa transação e devolve o jogo com o id gerado.</summary>
     Task<Jogo> InserirAsync(Jogo jogo, IReadOnlyCollection<int> idsGeneros);
 
-    /// <summary>Grava o jogo e substitui os seus gêneros numa transação.</summary>
+    /// <summary>
+    /// Grava o jogo e substitui os seus gêneros numa transação. A situação (Ativo)
+    /// vem do jogo recebido: assim, um jogo desativado pode ser reativado.
+    /// </summary>
     Task AlterarAsync(Jogo jogo, IReadOnlyCollection<int> idsGeneros);
 
     /// <summary>Marca o jogo como inativo. Jogo nunca é apagado (RN03).</summary>

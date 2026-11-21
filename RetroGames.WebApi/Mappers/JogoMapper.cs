@@ -1,3 +1,4 @@
+using RetroGames.Model.Model;
 using RetroGames.Services;
 using RetroGames.WebApi.ApiModels;
 
@@ -61,5 +62,43 @@ public static class JogoMapper
                 ? (int)Math.Ceiling(totalItens / (double)tamanhoPagina)
                 : 0,
         };
+    }
+
+    /// <summary>Inclusão: sem id (gerado pelo banco) e sem ativo (todo jogo novo nasce ativo).</summary>
+    public static Jogo ParaModel(this InserirJogoRequestApiModel request)
+    {
+        return new Jogo
+        {
+            Nome = request.Nome,
+            Descricao = DescricaoOuNulo(request.Descricao),
+            AnoLancamento = request.AnoLancamento,
+            Preco = request.Preco,
+            Estoque = request.Estoque,
+            IdPlataforma = request.IdPlataforma,
+            IdCondicaoJogo = request.IdCondicaoJogo,
+        };
+    }
+
+    /// <summary>Alteração: o id vem da rota; a situação vem do corpo.</summary>
+    public static Jogo ParaModel(this AlterarJogoRequestApiModel request, int id)
+    {
+        return new Jogo
+        {
+            Id = id,
+            Nome = request.Nome,
+            Descricao = DescricaoOuNulo(request.Descricao),
+            AnoLancamento = request.AnoLancamento,
+            Preco = request.Preco,
+            Estoque = request.Estoque,
+            Ativo = request.Ativo,
+            IdPlataforma = request.IdPlataforma,
+            IdCondicaoJogo = request.IdCondicaoJogo,
+        };
+    }
+
+    /// <summary>Descrição vazia ou só com espaços vira NULL no banco (ds_jogo é opcional).</summary>
+    private static string? DescricaoOuNulo(string? descricao)
+    {
+        return string.IsNullOrWhiteSpace(descricao) ? null : descricao.Trim();
     }
 }

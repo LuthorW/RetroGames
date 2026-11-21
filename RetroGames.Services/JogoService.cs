@@ -79,12 +79,13 @@ public class JogoService : IJogoService
 
     public async Task AlterarAsync(Jogo jogo, IReadOnlyCollection<int> idsGeneros)
     {
-        var jogoGravado = await BuscarJogoExistenteAsync(jogo.Id);
+        // Lança JOGO_NAO_ENCONTRADO se não existir.
+        await BuscarJogoExistenteAsync(jogo.Id);
 
         jogo.Nome = jogo.Nome.Trim();
 
-        // A situação não muda na alteração: desativar é uma operação própria (RN03).
-        jogo.Ativo = jogoGravado.Ativo;
+        // A situação (Ativo) vem do cliente: um PUT com "ativo": true reativa um
+        // jogo desativado pela exclusão lógica (RN03).
 
         var generosDoJogo = idsGeneros.Distinct().ToList();
         await ValidarReferenciasAsync(jogo, generosDoJogo);
