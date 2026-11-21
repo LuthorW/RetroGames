@@ -30,12 +30,26 @@ builder.Services
         // JSON malformado ou tipo errado (o [ApiController] recusa antes do filtro):
         // mesma resposta da validação, 400 com o código 3 e os erros por campo.
         opcoes.InvalidModelStateResponseFactory = contexto =>
-            FluentValidationFilter.CriarRespostaErrosDeCampo(
-                contexto.ModelState
-                    .Where(item => item.Value is { Errors.Count: > 0 })
-                    .ToDictionary(
-                        item => FluentValidationFilter.ParaCamelCase(item.Key),
-                        item => new[] { "Valor inválido ou ausente." }));
+        {
+            // O nome do parâmetro da action (ex.: "request") não é um campo do JSON:
+            // aparece só porque o corpo não pôde ser lido. Fica de fora da lista.
+            var parametros = contexto.ActionDescriptor.Parameters
+                .Select(parametro => parametro.Name)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            var erros = contexto.ModelState
+                .Where(item => item.Value is { Errors.Count: > 0 } && !parametros.Contains(item.Key))
+                .ToDictionary(
+                    item => FluentValidationFilter.ParaCamelCase(item.Key),
+                    item => new[] { "Valor inválido ou ausente." });
+
+            if (erros.Count == 0)
+            {
+                erros["corpo"] = new[] { "Valor inválido ou ausente." };
+            }
+
+            return FluentValidationFilter.CriarRespostaErrosDeCampo(erros);
+        };
     });
 
 // Registra todos os validators deste projeto (classes que herdam de AbstractValidator).
