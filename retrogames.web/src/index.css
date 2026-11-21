@@ -1,1 +1,62 @@
 /* Ajustes visuais complementares ao Bootstrap (Especificação 8.1). */
+
+/* Cor da marca: troque só estas variáveis para mudar o roxo do site inteiro. */
+:root {
+  --retro-roxo: #6f42c1;
+  --retro-roxo-escuro: #59359a;
+  --retro-roxo-rgb: 111, 66, 193;
+
+  /* Links */
+  --bs-link-color-rgb: var(--retro-roxo-rgb);
+  --bs-link-hover-color-rgb: 89, 53, 154;
+}
+
+/* Barra de navegação */
+.navbar-retro {
+  background-color: var(--retro-roxo);
+}
+
+/* Botão principal (Buscar, Ir para o catálogo) */
+.btn-primary {
+  --bs-btn-bg: var(--retro-roxo);
+  --bs-btn-border-color: var(--retro-roxo);
+  --bs-btn-hover-bg: var(--retro-roxo-escuro);
+  --bs-btn-hover-border-color: var(--retro-roxo-escuro);
+  --bs-btn-active-bg: var(--retro-roxo-escuro);
+  --bs-btn-active-border-color: var(--retro-roxo-escuro);
+  --bs-btn-focus-shadow-rgb: var(--retro-roxo-rgb);
+}
+
+/* Botão com contorno (Ver detalhes) */
+.btn-outline-primary {
+  --bs-btn-color: var(--retro-roxo);
+  --bs-btn-border-color: var(--retro-roxo);
+  --bs-btn-hover-bg: var(--retro-roxo);
+  --bs-btn-hover-border-color: var(--retro-roxo);
+  --bs-btn-active-bg: var(--retro-roxo-escuro);
+  --bs-btn-active-border-color: var(--retro-roxo-escuro);
+  --bs-btn-focus-shadow-rgb: var(--retro-roxo-rgb);
+}
+
+/* Botão "Limpar filtros" */
+.btn-link {
+  --bs-btn-color: var(--retro-roxo);
+  --bs-btn-hover-color: var(--retro-roxo-escuro);
+}
+
+/* Paginação */
+.pagination {
+  --bs-pagination-color: var(--retro-roxo);
+  --bs-pagination-hover-color: var(--retro-roxo-escuro);
+  --bs-pagination-active-bg: var(--retro-roxo);
+  --bs-pagination-active-border-color: var(--retro-roxo);
+  --bs-pagination-focus-color: var(--retro-roxo-escuro);
+  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(var(--retro-roxo-rgb), 0.25);
+}
+
+/* Campo de busca e filtros, quando selecionados */
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(var(--retro-roxo-rgb), 0.6);
+  box-shadow: 0 0 0 0.25rem rgba(var(--retro-roxo-rgb), 0.25);
+}

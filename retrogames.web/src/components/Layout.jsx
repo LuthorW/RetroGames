@@ -4,7 +4,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 function Layout() {
   return (
     <div className="d-flex flex-column min-vh-100">
-      <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-md navbar-dark navbar-retro">
         <div className="container">
           {/* Link (e não <a href>): troca a página sem recarregar o site. */}
           <Link className="navbar-brand fw-bold" to="/">
