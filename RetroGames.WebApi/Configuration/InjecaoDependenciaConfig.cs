@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using RetroGames.Model.Model;
 using RetroGames.Repository;
 using RetroGames.Services;
+using RetroGames.WebApi.Services;
 
 namespace RetroGames.WebApi.Configuration;
 
@@ -41,6 +42,10 @@ public static class InjecaoDependenciaConfig
         services.AddScoped<ICondicaoJogoService, CondicaoJogoService>();
         services.AddScoped<IJogoService, JogoService>();
         services.AddScoped<IAutenticacaoService, AutenticacaoService>();
+
+        // Usuário atual: a WebApi lê o usuário da requisição e entrega aos Services pela interface.
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUsuarioAtualService, UsuarioAtualService>();
 
         // Gera e confere o hash das senhas (PBKDF2 com salt). Não guarda estado: uma instância basta.
         services.AddSingleton<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();

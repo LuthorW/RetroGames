@@ -7,10 +7,12 @@ namespace RetroGames.Services;
 public class JogoService : IJogoService
 {
     private readonly IRepositorySet _repositorio;
+    private readonly IUsuarioAtualService _usuarioAtual;
 
-    public JogoService(IRepositorySet repositorio)
+    public JogoService(IRepositorySet repositorio, IUsuarioAtualService usuarioAtual)
     {
         _repositorio = repositorio;
+        _usuarioAtual = usuarioAtual;
     }
 
     public async Task<(List<JogoDetalheServiceModel> Jogos, int Total)> ListarAsync(
@@ -34,10 +36,12 @@ public class JogoService : IJogoService
                 .ToList();
         }
 
-        // incluirInativos é repassado como veio. A regra de só o Administrador
-        // ver jogos inativos (RN04) entra na aula 6.
+        // RN04: jogos inativos só para o Administrador. Para os demais, o pedido de
+        // incluirInativos é ignorado e a listagem traz só jogos ativos.
+        var mostrarInativos = incluirInativos && _usuarioAtual.EhAdministrador;
+
         var (jogos, total) = await _repositorio.Jogo.ListarAsync(
-            busca, idPlataforma, idsJogos, incluirInativos, pagina, tamanhoPagina);
+            busca, idPlataforma, idsJogos, mostrarInativos, pagina, tamanhoPagina);
 
         var detalhes = await MontarDetalhesAsync(jogos);
         return (detalhes, total);
@@ -46,6 +50,12 @@ public class JogoService : IJogoService
     public async Task<JogoDetalheServiceModel> BuscarPorIdAsync(int id)
     {
         var jogo = await BuscarJogoExistenteAsync(id);
+
+        // RN04: para quem não é Administrador, jogo inativo é como se não existisse.
+        if (!jogo.Ativo && !_usuarioAtual.EhAdministrador)
+        {
+            throw new BusinessRuleException(BusinessErrors.JOGO_NAO_ENCONTRADO);
+        }
         var detalhes = await MontarDetalhesAsync(new List<Jogo> { jogo });
         return detalhes.Single();
     }

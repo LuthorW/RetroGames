@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RetroGames.Services;
 using RetroGames.WebApi.ApiModels;
+using RetroGames.WebApi.Configuration;
 using RetroGames.WebApi.Mappers;
 
 namespace RetroGames.WebApi.Controllers;
@@ -16,17 +18,18 @@ public class JogoController : ControllerBase
         _jogoService = jogoService;
     }
 
-    /// <summary>Lista paginada de jogos ativos, com busca e filtros.</summary>
+    /// <summary>Lista paginada de jogos, com busca e filtros. Inativos só para o Administrador.</summary>
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<RetroGamesResponseApiModel<PaginaResponseApiModel<ListarJogoResponseApiModel>>>> Listar(
         [FromQuery] ListarJogoRequestApiModel request)
     {
-        // Só jogos ativos: incluirInativos (somente Administrador) entra na aula 6.
+        // incluirInativos só vale para o Administrador: quem decide é o JogoService (RN04).
         var (jogos, totalItens) = await _jogoService.ListarAsync(
             request.Busca,
             request.IdPlataforma,
             request.IdGenero,
-            incluirInativos: false,
+            request.IncluirInativos,
             request.Pagina,
             request.TamanhoPagina);
 
@@ -38,6 +41,7 @@ public class JogoController : ControllerBase
     }
 
     /// <summary>Consulta um jogo pelo id, com os seus gêneros.</summary>
+    [AllowAnonymous]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<RetroGamesResponseApiModel<ListarPorIdJogoResponseApiModel>>> ListarPorId(int id)
     {
@@ -51,6 +55,7 @@ public class JogoController : ControllerBase
     }
 
     /// <summary>Inclui um jogo com os seus gêneros. Responde 201, com o cabeçalho Location.</summary>
+    [Authorize(Policy = Politicas.Administrador)]
     [HttpPost]
     public async Task<ActionResult<RetroGamesResponseApiModel<ListarPorIdJogoResponseApiModel>>> Inserir(
         InserirJogoRequestApiModel request)
@@ -69,6 +74,7 @@ public class JogoController : ControllerBase
     }
 
     /// <summary>Altera um jogo (recurso completo, inclusive gêneros e situação). Responde 200.</summary>
+    [Authorize(Policy = Politicas.Administrador)]
     [HttpPut("{id:int}")]
     public async Task<ActionResult<RetroGamesResponseApiModel<ListarPorIdJogoResponseApiModel>>> Alterar(
         int id, AlterarJogoRequestApiModel request)
@@ -88,6 +94,7 @@ public class JogoController : ControllerBase
     /// Desativa um jogo (exclusão lógica, RN03): o registro fica no banco com
     /// st_ativo = FALSE. Responde 200 com o envelope (a API não usa 204).
     /// </summary>
+    [Authorize(Policy = Politicas.Administrador)]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<RetroGamesResponseApiModel<object>>> Desativar(int id)
     {

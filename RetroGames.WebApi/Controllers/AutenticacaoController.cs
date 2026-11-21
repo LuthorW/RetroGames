@@ -21,6 +21,7 @@ public class AutenticacaoController : ControllerBase
     }
 
     /// <summary>Confere e-mail e senha e cria a sessão (cookie retrogames.sessao).</summary>
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<RetroGamesResponseApiModel<UsuarioLogadoResponseApiModel>>> Login(
         LoginRequestApiModel request)
@@ -48,8 +49,7 @@ public class AutenticacaoController : ControllerBase
         });
     }
 
-    /// <summary>Encerra a sessão (apaga o cookie).</summary>
-    [Authorize]
+    /// <summary>Encerra a sessão (apaga o cookie). Exige login: vale a política padrão.</summary>
     [HttpPost("logout")]
     public async Task<ActionResult<RetroGamesResponseApiModel<object>>> Logout()
     {
@@ -61,8 +61,7 @@ public class AutenticacaoController : ControllerBase
         });
     }
 
-    /// <summary>Dados do usuário logado, lidos do cookie de sessão.</summary>
-    [Authorize]
+    /// <summary>Dados do usuário logado, lidos do cookie de sessão. Exige login: vale a política padrão.</summary>
     [HttpGet("eu")]
     public ActionResult<RetroGamesResponseApiModel<UsuarioLogadoResponseApiModel>> Eu()
     {

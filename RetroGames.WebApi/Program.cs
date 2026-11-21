@@ -33,9 +33,9 @@ if (string.IsNullOrWhiteSpace(emailAdministrador) || string.IsNullOrWhiteSpace(s
 builder.Services.AddRepositorios(connectionString);
 builder.Services.AddServicosDeNegocio();
 
-// Sessão por cookie (login) e autorização ([Authorize])
+// Sessão por cookie (login) e autorização: política padrão e SomenteAdministrador
 builder.Services.AddAutenticacao();
-builder.Services.AddAuthorization();
+builder.Services.AddAutorizacao();
 
 // Controllers, com o filtro de validação valendo para todas as actions.
 builder.Services
@@ -93,7 +93,9 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     // Descrição da API em /openapi/v1.json e página de testes em /swagger
-    app.MapOpenApi();
+    // AllowAnonymous: sem isso, a política padrão exigiria login para ler a descrição
+    // da API, e o /swagger mostraria "Failed to load API definition".
+    app.MapOpenApi().AllowAnonymous();
     app.UseSwaggerUI(opcoes => opcoes.SwaggerEndpoint("/openapi/v1.json", "RetroGames API"));
 }
 
