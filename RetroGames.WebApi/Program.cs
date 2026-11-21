@@ -1,4 +1,6 @@
+using FluentValidation;
 using RetroGames.WebApi.Configuration;
+using RetroGames.WebApi.Filters;
 using RetroGames.WebApi.Middlewares;
 
 // Carrega o .env (procurando a partir da pasta atual e subindo até a raiz do
@@ -19,7 +21,26 @@ if (string.IsNullOrWhiteSpace(connectionString))
 // Injeção de dependência
 builder.Services.AddRepositorios(connectionString);
 builder.Services.AddServicosDeNegocio();
-builder.Services.AddControllers();
+
+// Controllers, com o filtro de validação valendo para todas as actions.
+builder.Services
+    .AddControllers(opcoes => opcoes.Filters.Add<FluentValidationFilter>())
+    .ConfigureApiBehaviorOptions(opcoes =>
+    {
+        // JSON malformado ou tipo errado (o [ApiController] recusa antes do filtro):
+        // mesma resposta da validação, 400 com o código 3 e os erros por campo.
+        opcoes.InvalidModelStateResponseFactory = contexto =>
+            FluentValidationFilter.CriarRespostaErrosDeCampo(
+                contexto.ModelState
+                    .Where(item => item.Value is { Errors.Count: > 0 })
+                    .ToDictionary(
+                        item => FluentValidationFilter.ParaCamelCase(item.Key),
+                        item => new[] { "Valor inválido ou ausente." }));
+    });
+
+// Registra todos os validators deste projeto (classes que herdam de AbstractValidator).
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 builder.Services.AddOpenApi();
 
 // Tratamento global de erros
