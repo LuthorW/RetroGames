@@ -17,3 +17,19 @@ export function obterMensagemErro(erro) {
 
   return MENSAGEM_GENERICA
 }
+
+// Erros de validação (400, responseCode 3): o data traz { campo: [mensagens] }.
+// Devolve { campo: primeiraMensagem }, para mostrar embaixo de cada campo.
+// Em qualquer outro erro, devolve {} (a tela mostra o errorMessage).
+export function obterErrosDosCampos(erro) {
+  const envelope = erro?.response?.data
+  if (envelope?.responseCode !== 3 || !envelope.data) {
+    return {}
+  }
+
+  const erros = {}
+  for (const [campo, mensagens] of Object.entries(envelope.data)) {
+    erros[campo] = Array.isArray(mensagens) ? mensagens[0] : String(mensagens)
+  }
+  return erros
+}
