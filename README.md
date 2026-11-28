@@ -11,8 +11,6 @@
 ![Vite](https://img.shields.io/badge/Vite-8-8a00e6?style=for-the-badge&logo=vite&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-8-8a00e6?style=for-the-badge&logo=mysql&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-8a00e6?style=for-the-badge&logo=bootstrap&logoColor=white)
-![Testes](https://img.shields.io/badge/testes-16%20aprovados-4ade80?style=for-the-badge&logo=xunit&logoColor=white)
-
 </div>
 
 ---
