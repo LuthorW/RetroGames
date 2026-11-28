@@ -2,7 +2,23 @@ import api from './api'
 
 // Uma função por endpoint. Cada uma já devolve o "data" do envelope
 // { responseCode, data, errorMessage }, para as páginas não lidarem com ele.
-// Por enquanto, só leituras: gravação e login entram na aula 8.
+
+export const autenticacaoApi = {
+  // Confere e-mail e senha; a API devolve o cookie de sessão e o usuário.
+  entrar: async (email, senha) => {
+    const resposta = await api.post('/Autenticacao/login', { email, senha })
+    return resposta.data.data
+  },
+  // Encerra a sessão (a API apaga o cookie).
+  sair: async () => {
+    await api.post('/Autenticacao/logout')
+  },
+  // Quem está logado: { id, nome, email, perfil }. Visitante recebe 401.
+  usuarioAtual: async () => {
+    const resposta = await api.get('/Autenticacao/eu')
+    return resposta.data.data
+  },
+}
 
 export const jogoApi = {
   // filtros: { busca, idPlataforma, idGenero, pagina, tamanhoPagina }

@@ -1,7 +1,12 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 
+import { useAutenticacao } from '../hooks/useAutenticacao'
+
 // Moldura comum a todas as páginas: menu, área da página e rodapé.
 function Layout() {
+  // TESTE PROVISÓRIO da etapa 1: remover antes do commit.
+  const { usuario, carregando } = useAutenticacao()
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <nav className="navbar navbar-expand-md navbar-dark navbar-retro">
@@ -33,6 +38,11 @@ function Layout() {
                 </NavLink>
               </li>
             </ul>
+
+            {/* TESTE PROVISÓRIO da etapa 1: remover antes do commit. */}
+            <span className="navbar-text">
+              {carregando ? '...' : usuario ? usuario.nome : 'visitante'}
+            </span>
           </div>
         </div>
       </nav>
