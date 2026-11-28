@@ -1,11 +1,18 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 
 import { useAutenticacao } from '../hooks/useAutenticacao'
 
 // Moldura comum a todas as páginas: menu, área da página e rodapé.
+// O menu muda conforme quem está logado: visitante vê Entrar; quem está logado
+// vê "Olá, nome" e Sair; o administrador vê também o menu Administração.
 function Layout() {
-  // TESTE PROVISÓRIO da etapa 1: remover antes do commit.
-  const { usuario, carregando } = useAutenticacao()
+  const { usuario, carregando, estaAutenticado, ehAdministrador, sair } = useAutenticacao()
+  const navegar = useNavigate()
+
+  async function aoSair() {
+    await sair()
+    navegar('/')
+  }
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -37,12 +44,57 @@ function Layout() {
                   Catálogo
                 </NavLink>
               </li>
+
+              {/* Só para o administrador. A API também protege (RS03). */}
+              {ehAdministrador && (
+                <li className="nav-item dropdown">
+                  <button
+                    className="nav-link dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Administração
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <NavLink className="dropdown-item" to="/admin/jogos">
+                        Jogos
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="dropdown-item" to="/admin/plataformas">
+                        Plataformas
+                      </NavLink>
+                    </li>
+                  </ul>
+                </li>
+              )}
             </ul>
 
-            {/* TESTE PROVISÓRIO da etapa 1: remover antes do commit. */}
-            <span className="navbar-text">
-              {carregando ? '...' : usuario ? usuario.nome : 'visitante'}
-            </span>
+            {/* Enquanto o "eu" não responde, não mostra Entrar nem Sair. */}
+            {!carregando && (
+              <ul className="navbar-nav align-items-md-center gap-md-2">
+                {estaAutenticado ? (
+                  <>
+                    <li className="nav-item">
+                      <span className="navbar-text">Olá, {usuario.nome}</span>
+                    </li>
+                    <li className="nav-item">
+                      <button type="button" className="btn btn-outline-light btn-sm" onClick={aoSair}>
+                        Sair
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/login">
+                      Entrar
+                    </NavLink>
+                  </li>
+                )}
+              </ul>
+            )}
           </div>
         </div>
       </nav>
