@@ -45,10 +45,6 @@
   <br /><sub>Responsivo: no celular o menu vira um botão e os cartões ficam em uma coluna</sub>
 </div>
 
-### Identidade visual
-
-Tema escuro "cinematográfico", com fundo de estrelas animadas, grade sutil, cartões de vidro com brilho roxo, botões em pílula com degradê e a fonte Inter. As animações respeitam a preferência do sistema por menos movimento, e todo elemento clicável tem foco visível para quem navega pelo teclado.
-
 ---
 
 ## 🎮 Funcionalidades
