@@ -1,6 +1,8 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 
 import { useAutenticacao } from '../hooks/useAutenticacao'
+import FundoEstrelado from './FundoEstrelado'
+
 
 // Moldura comum a todas as páginas: menu, área da página e rodapé.
 // O menu muda conforme quem está logado: visitante vê Entrar; quem está logado
@@ -16,10 +18,13 @@ function Layout() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      <FundoEstrelado />
+
       <nav className="navbar navbar-expand-md navbar-dark navbar-retro">
         <div className="container">
           {/* Link (e não <a href>): troca a página sem recarregar o site. */}
-          <Link className="navbar-brand fw-bold" to="/">
+          <Link className="navbar-brand marca" to="/">
+            <img src="/logo.png" alt="" width="40" height="40" />
             RetroGames
           </Link>
 
@@ -78,7 +83,7 @@ function Layout() {
                 {estaAutenticado ? (
                   <>
                     <li className="nav-item">
-                      <span className="navbar-text">Olá, {usuario.nome}</span>
+                      <span className="navbar-text saudacao">Olá, {usuario.nome}</span>
                     </li>
                     <li className="nav-item">
                       <button type="button" className="btn btn-outline-light btn-sm" onClick={aoSair}>
@@ -103,7 +108,7 @@ function Layout() {
         <Outlet />
       </main>
 
-      <footer className="bg-light border-top py-3">
+      <footer className="rodape-retro py-3">
         <div className="container text-center text-muted small">
           RetroGames · Loja de jogos retrô usados
         </div>

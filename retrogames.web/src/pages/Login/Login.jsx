@@ -43,7 +43,7 @@ function Login() {
   return (
     <div className="row justify-content-center">
       <div className="col-12 col-sm-10 col-md-7 col-lg-5">
-        <div className="card shadow-sm">
+        <div className="card">
           <div className="card-body p-4">
             <h1 className="h3 mb-4 text-center">Entrar</h1>
 

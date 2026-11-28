@@ -171,7 +171,7 @@ function FormularioJogo() {
   return (
     <>
       {linkVoltar}
-      <h1 className="h3 mb-4">{titulo}</h1>
+      <h1 className="h3 titulo-pagina">{titulo}</h1>
 
       {erroGravacao && (
         <div className="alert alert-danger" role="alert">
@@ -179,7 +179,7 @@ function FormularioJogo() {
         </div>
       )}
 
-      <form onSubmit={salvar} noValidate className="card shadow-sm">
+      <form onSubmit={salvar} noValidate className="card">
         <div className="card-body row g-3">
           <div className="col-12 col-md-8">
             <label htmlFor="nome" className="form-label">

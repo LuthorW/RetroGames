@@ -86,15 +86,15 @@ function DetalheJogo() {
 
       <div className="row g-4">
         <div className="col-12 col-md-8">
-          <p className="text-muted mb-1">{jogo.nomePlataforma}</p>
-          <h1 className="h2">{jogo.nome}</h1>
+          <p className="sobretitulo mb-2">{jogo.nomePlataforma}</p>
+          <h1 className="titulo-brilho h1">{jogo.nome}</h1>
           <p className="mb-3">
             {jogo.anoLancamento} · {jogo.descricaoCondicaoJogo}
           </p>
 
           <div className="d-flex flex-wrap gap-1 mb-4">
             {jogo.generos.map((genero) => (
-              <span key={genero.id} className="badge text-bg-light border">
+              <span key={genero.id} className="badge badge-genero">
                 {genero.nome}
               </span>
             ))}
@@ -105,9 +105,9 @@ function DetalheJogo() {
         </div>
 
         <div className="col-12 col-md-4">
-          <div className="card shadow-sm">
+          <div className="card">
             <div className="card-body">
-              <p className="display-6 fw-semibold mb-2">{formatarPreco(jogo.preco)}</p>
+              <p className="display-6 preco mb-2">{formatarPreco(jogo.preco)}</p>
               {esgotado ? (
                 <span className="badge text-bg-secondary">Esgotado</span>
               ) : (

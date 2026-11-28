@@ -125,12 +125,12 @@ function Plataforma() {
 
   return (
     <>
-      <h1 className="h3 mb-4">Plataformas</h1>
+      <h1 className="h3 titulo-pagina">Plataformas</h1>
 
       <div className="row g-4">
         {/* Formulário */}
         <div className="col-12 col-lg-4">
-          <div className="card shadow-sm">
+          <div className="card">
             <div className="card-body">
               <h2 className="h5 mb-3">{emEdicao ? 'Alterar plataforma' : 'Nova plataforma'}</h2>
 

@@ -98,7 +98,14 @@ function Catalogo() {
 
   return (
     <>
-      <h1 className="h3 mb-3">Catálogo</h1>
+      {/* Destaque do topo, com órbitas animadas (só decoração). */}
+      <section className="destaque">
+        <span className="orbita orbita-1" aria-hidden="true" />
+        <span className="orbita orbita-2" aria-hidden="true" />
+        <p className="sobretitulo">Loja de jogos retrô usados</p>
+        <h1 className="titulo-brilho mb-3">Catálogo</h1>
+        <p className="mb-0">Clássicos de todas as gerações, conferidos e prontos para jogar de novo.</p>
+      </section>
 
       <div className="row g-2 mb-4">
         {/* key={busca}: quando a URL muda (Voltar, Limpar), o campo mostra o texto dela. */}

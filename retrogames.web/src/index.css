@@ -1,62 +1,548 @@
-/* Ajustes visuais complementares ao Bootstrap (Especificação 8.1). */
+/* =========================================================
+   RetroGames — tema escuro "cinematográfico"
+   Ajustes visuais complementares ao Bootstrap (Especificação 8.1).
+   O <html> usa data-bs-theme="dark"; aqui ficam as cores da marca.
+   Para mudar o roxo do site inteiro, troque só as variáveis abaixo.
+   ========================================================= */
+:root,
+[data-bs-theme='dark'] {
+  --retro-fundo: #07050b;
+  --retro-fundo-2: #0d0a13;
+  --retro-cartao: rgba(22, 17, 29, 0.82);
+  --retro-borda: rgba(255, 255, 255, 0.12);
+  --retro-borda-forte: rgba(176, 91, 255, 0.42);
+  --retro-roxo: #8a00e6;
+  --retro-roxo-2: #b84cff;
+  --retro-roxo-escuro: #5f22c8;
+  --retro-roxo-rgb: 138, 0, 230;
+  --retro-roxo-suave: rgba(138, 0, 230, 0.16);
+  --retro-texto: #f6f0ff;
+  --retro-apagado: #b6a9c5;
+  --retro-lilas: #dfc5ff;
+  --retro-raio: 20px;
+  --retro-transicao: 0.24s ease;
 
-/* Cor da marca: troque só estas variáveis para mudar o roxo do site inteiro. */
-:root {
-  --retro-roxo: #6f42c1;
-  --retro-roxo-escuro: #59359a;
-  --retro-roxo-rgb: 111, 66, 193;
-
-  /* Links */
-  --bs-link-color-rgb: var(--retro-roxo-rgb);
-  --bs-link-hover-color-rgb: 89, 53, 154;
+  /* Bootstrap no tema escuro, com as cores da marca */
+  --bs-body-font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --bs-body-bg: var(--retro-fundo);
+  --bs-body-color: var(--retro-texto);
+  --bs-secondary-color: var(--retro-apagado);
+  --bs-border-color: var(--retro-borda);
+  --bs-primary: var(--retro-roxo);
+  --bs-primary-rgb: var(--retro-roxo-rgb);
+  --bs-link-color-rgb: 223, 197, 255;
+  --bs-link-hover-color-rgb: 255, 255, 255;
+  --bs-emphasis-color: #ffffff;
+  --bs-tertiary-bg: var(--retro-fundo-2);
+  --bs-border-radius: 14px;
+  --bs-border-radius-lg: var(--retro-raio);
 }
 
-/* Barra de navegação */
+/* ---------- Fundo: brilho roxo + grade sutil ---------- */
+body {
+  min-height: 100vh;
+  background: var(--retro-fundo);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Brilho roxo numa camada fixa própria: rolar a página não redesenha o fundo. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(138, 0, 230, 0.2), transparent 28rem),
+    radial-gradient(circle at 100% 20%, rgba(119, 72, 255, 0.12), transparent 26rem),
+    linear-gradient(180deg, var(--retro-fundo) 0%, #050307 100%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px);
+  background-size: 58px 58px;
+  mask-image: radial-gradient(circle at center, black 34%, transparent 95%);
+}
+
+/* Estrelas animadas (componente FundoEstrelado) */
+.fundo-estrelado {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+::selection {
+  background: rgba(var(--retro-roxo-rgb), 0.55);
+  color: #fff;
+}
+
+/* Foco visível para quem navega pelo teclado (acessibilidade) */
+:focus-visible {
+  outline: 2px solid var(--retro-roxo-2);
+  outline-offset: 3px;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+/* Título de página com o traço roxo embaixo */
+.titulo-pagina {
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+.titulo-pagina::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 3px;
+  margin-top: 12px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--retro-roxo), var(--retro-roxo-2));
+}
+
+.text-muted,
+.text-body-secondary {
+  color: var(--retro-apagado) !important;
+}
+
+a {
+  transition: color var(--retro-transicao);
+}
+
+/* ---------- Barra de navegação (vidro escuro, fixa no topo) ---------- */
 .navbar-retro {
-  background-color: var(--retro-roxo);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  min-height: 72px;
+  background: rgba(7, 5, 11, 0.72);
+  border-bottom: 1px solid var(--retro-borda);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-/* Botão principal (Buscar, Ir para o catálogo) */
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.marca img {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 0 14px rgba(var(--retro-roxo-rgb), 0.45));
+  transition: transform 0.45s ease;
+}
+
+.marca:hover img {
+  transform: rotate(-10deg) scale(1.05);
+}
+
+.navbar-retro .nav-link {
+  position: relative;
+  color: var(--retro-apagado);
+  font-weight: 800;
+  font-size: 0.93rem;
+}
+
+.navbar-retro .nav-link:hover,
+.navbar-retro .nav-link:focus-visible,
+.navbar-retro .nav-link.active,
+.navbar-retro .nav-link.show {
+  color: var(--retro-texto);
+}
+
+/* Traço roxo embaixo do link da página atual (só no computador) */
+@media (min-width: 768px) {
+  .navbar-retro .nav-link::after {
+    content: '';
+    position: absolute;
+    left: var(--bs-navbar-nav-link-padding-x);
+    right: var(--bs-navbar-nav-link-padding-x);
+    bottom: 2px;
+    height: 2px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--retro-roxo), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--retro-transicao);
+  }
+
+  .navbar-retro .nav-link:hover::after,
+  .navbar-retro .nav-link.active::after {
+    transform: scaleX(1);
+  }
+
+  .navbar-retro .dropdown-toggle::after {
+    position: static;
+    background: none;
+    transform: none;
+  }
+}
+
+.navbar-retro .navbar-toggler {
+  border: 1px solid var(--retro-borda);
+  border-radius: 14px;
+  background: var(--retro-cartao);
+}
+
+.saudacao {
+  color: var(--retro-lilas);
+  font-weight: 700;
+}
+
+/* Menu suspenso (Administração) */
+.dropdown-menu {
+  --bs-dropdown-bg: rgba(13, 10, 19, 0.96);
+  --bs-dropdown-border-color: var(--retro-borda);
+  --bs-dropdown-link-hover-bg: var(--retro-roxo-suave);
+  --bs-dropdown-link-active-bg: var(--retro-roxo);
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.dropdown-item {
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+/* ---------- Botões em pílula com degradê ---------- */
+.btn {
+  border-radius: 999px;
+  font-weight: 800;
+  padding-inline: 1.15rem;
+  transition:
+    transform var(--retro-transicao),
+    box-shadow var(--retro-transicao),
+    background var(--retro-transicao);
+}
+
+.btn-sm {
+  padding-inline: 0.85rem;
+}
+
 .btn-primary {
+  --bs-btn-color: #fff;
   --bs-btn-bg: var(--retro-roxo);
-  --bs-btn-border-color: var(--retro-roxo);
-  --bs-btn-hover-bg: var(--retro-roxo-escuro);
-  --bs-btn-hover-border-color: var(--retro-roxo-escuro);
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-border-color: transparent;
   --bs-btn-active-bg: var(--retro-roxo-escuro);
-  --bs-btn-active-border-color: var(--retro-roxo-escuro);
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-disabled-bg: var(--retro-roxo-escuro);
+  --bs-btn-disabled-border-color: transparent;
+  --bs-btn-focus-shadow-rgb: var(--retro-roxo-rgb);
+  background: linear-gradient(135deg, var(--retro-roxo), var(--retro-roxo-escuro));
+  box-shadow: 0 14px 32px rgba(var(--retro-roxo-rgb), 0.24);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(var(--retro-roxo-rgb), 0.34);
+}
+
+.btn-outline-primary,
+.btn-outline-light,
+.btn-outline-secondary {
+  --bs-btn-color: var(--retro-texto);
+  --bs-btn-bg: rgba(255, 255, 255, 0.055);
+  --bs-btn-border-color: var(--retro-borda);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--retro-roxo-suave);
+  --bs-btn-hover-border-color: var(--retro-borda-forte);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: rgba(var(--retro-roxo-rgb), 0.3);
+  --bs-btn-active-border-color: var(--retro-borda-forte);
   --bs-btn-focus-shadow-rgb: var(--retro-roxo-rgb);
 }
 
-/* Botão com contorno (Ver detalhes) */
-.btn-outline-primary {
-  --bs-btn-color: var(--retro-roxo);
-  --bs-btn-border-color: var(--retro-roxo);
-  --bs-btn-hover-bg: var(--retro-roxo);
-  --bs-btn-hover-border-color: var(--retro-roxo);
-  --bs-btn-active-bg: var(--retro-roxo-escuro);
-  --bs-btn-active-border-color: var(--retro-roxo-escuro);
-  --bs-btn-focus-shadow-rgb: var(--retro-roxo-rgb);
+/* Ações destrutivas sempre em vermelho (heurística: consistência) */
+.btn-outline-danger {
+  --bs-btn-bg: rgba(248, 113, 113, 0.06);
+  --bs-btn-border-color: rgba(248, 113, 113, 0.45);
+  --bs-btn-color: #fca5a5;
 }
 
-/* Botão "Limpar filtros" */
 .btn-link {
-  --bs-btn-color: var(--retro-roxo);
-  --bs-btn-hover-color: var(--retro-roxo-escuro);
+  --bs-btn-color: var(--retro-lilas);
+  --bs-btn-hover-color: #fff;
+  font-weight: 700;
 }
 
-/* Paginação */
-.pagination {
-  --bs-pagination-color: var(--retro-roxo);
-  --bs-pagination-hover-color: var(--retro-roxo-escuro);
-  --bs-pagination-active-bg: var(--retro-roxo);
-  --bs-pagination-active-border-color: var(--retro-roxo);
-  --bs-pagination-focus-color: var(--retro-roxo-escuro);
-  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(var(--retro-roxo-rgb), 0.25);
+/* ---------- Cartões de vidro, com brilho roxo ao passar o mouse ---------- */
+.card {
+  --bs-card-bg: transparent;
+  --bs-card-border-color: var(--retro-borda);
+  --bs-card-border-radius: var(--retro-raio);
+  --bs-card-cap-bg: transparent;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.03));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
 }
 
-/* Campo de busca e filtros, quando selecionados */
+.card-jogo {
+  transition:
+    transform var(--retro-transicao),
+    border-color var(--retro-transicao);
+}
+
+.card-jogo:hover,
+.card-jogo:focus-within {
+  transform: translateY(-6px);
+  border-color: var(--retro-borda-forte);
+}
+
+.card-jogo .plataforma {
+  color: var(--retro-lilas);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.preco {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+/* Etiquetas de gênero */
+.badge-genero {
+  padding: 0.4em 0.75em;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--retro-roxo-rgb), 0.3);
+  background: var(--retro-roxo-suave);
+  color: var(--retro-lilas);
+  font-weight: 800;
+}
+
+.badge {
+  border-radius: 999px;
+}
+
+/* ---------- Topo do catálogo (destaque com órbitas) ---------- */
+.destaque {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  margin-bottom: 2rem;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem);
+  border: 1px solid var(--retro-borda);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(var(--retro-roxo-rgb), 0.24), transparent 24rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+
+.destaque .orbita {
+  position: absolute;
+  z-index: -1;
+  left: 82%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: girar 38s linear infinite;
+}
+
+.destaque .orbita::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--retro-roxo-2);
+  box-shadow: 0 0 18px 4px rgba(184, 76, 255, 0.6);
+}
+
+.destaque .orbita-1 {
+  width: 260px;
+  height: 260px;
+  box-shadow: inset 0 0 70px rgba(var(--retro-roxo-rgb), 0.22);
+}
+
+.destaque .orbita-2 {
+  width: 440px;
+  height: 440px;
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.05);
+  animation-duration: 64s;
+  animation-direction: reverse;
+}
+
+@keyframes girar {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.sobretitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.75rem;
+  color: #e5ccff;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sobretitulo::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--retro-roxo), transparent);
+}
+
+.titulo-brilho {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.06em;
+  background: linear-gradient(90deg, #fff 10%, #d9b6ff 58%, var(--retro-roxo-2));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+.destaque p {
+  max-width: 560px;
+  color: var(--retro-apagado);
+  font-size: 1.08rem;
+}
+
+/* ---------- Formulários ---------- */
+.form-control,
+.form-select {
+  border-color: var(--retro-borda);
+  background-color: rgba(255, 255, 255, 0.045);
+  color: var(--retro-texto);
+}
+
+.form-control::placeholder {
+  color: rgba(182, 169, 197, 0.7);
+}
+
 .form-control:focus,
 .form-select:focus {
   border-color: rgba(var(--retro-roxo-rgb), 0.6);
+  background-color: rgba(255, 255, 255, 0.07);
   box-shadow: 0 0 0 0.25rem rgba(var(--retro-roxo-rgb), 0.25);
+}
+
+.form-select option {
+  background: var(--retro-fundo-2);
+}
+
+.form-check-input:checked {
+  background-color: var(--retro-roxo);
+  border-color: var(--retro-roxo);
+}
+
+.form-check-input:focus {
+  border-color: rgba(var(--retro-roxo-rgb), 0.6);
+  box-shadow: 0 0 0 0.25rem rgba(var(--retro-roxo-rgb), 0.25);
+}
+
+.form-label {
+  font-weight: 700;
+}
+
+/* ---------- Tabelas da administração ---------- */
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: rgba(var(--retro-roxo-rgb), 0.08);
+  --bs-table-active-bg: rgba(var(--retro-roxo-rgb), 0.14);
+  --bs-table-border-color: var(--retro-borda);
+}
+
+.table thead th {
+  color: var(--retro-apagado);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.table-responsive {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--retro-borda);
+  border-radius: var(--retro-raio);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+.table-responsive .table {
+  margin-bottom: 0;
+}
+
+/* ---------- Paginação ---------- */
+.pagination {
+  --bs-pagination-bg: rgba(255, 255, 255, 0.045);
+  --bs-pagination-border-color: var(--retro-borda);
+  --bs-pagination-color: var(--retro-texto);
+  --bs-pagination-hover-bg: var(--retro-roxo-suave);
+  --bs-pagination-hover-color: #fff;
+  --bs-pagination-hover-border-color: var(--retro-borda-forte);
+  --bs-pagination-active-bg: var(--retro-roxo);
+  --bs-pagination-active-border-color: var(--retro-roxo);
+  --bs-pagination-disabled-bg: rgba(255, 255, 255, 0.02);
+  --bs-pagination-disabled-border-color: var(--retro-borda);
+  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(var(--retro-roxo-rgb), 0.25);
+  gap: 6px;
+}
+
+.page-link {
+  border-radius: 999px !important;
+  font-weight: 800;
+}
+
+/* ---------- Alertas e estados ---------- */
+.alert {
+  border-radius: 16px;
+}
+
+.spinner-border {
+  color: var(--retro-roxo-2);
+}
+
+/* ---------- Rodapé ---------- */
+.rodape-retro {
+  border-top: 1px solid var(--retro-borda);
+  background: rgba(7, 5, 11, 0.85);
+}
+
+/* Quem prefere menos movimento não vê animações */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

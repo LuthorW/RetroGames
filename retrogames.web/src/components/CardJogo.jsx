@@ -6,24 +6,24 @@ function CardJogo({ jogo }) {
   const esgotado = jogo.estoque === 0
 
   return (
-    <div className="card h-100 shadow-sm">
+    <div className="card card-jogo h-100">
       <div className="card-body d-flex flex-column">
-        <p className="text-muted small mb-1">{jogo.nomePlataforma}</p>
+        <p className="plataforma mb-1">{jogo.nomePlataforma}</p>
         <h2 className="h5 card-title">{jogo.nome}</h2>
-        <p className="small mb-2">
+        <p className="small text-muted mb-2">
           {jogo.anoLancamento} · {jogo.descricaoCondicaoJogo}
         </p>
 
         <div className="d-flex flex-wrap gap-1 mb-3">
           {jogo.nomesGeneros.map((genero) => (
-            <span key={genero} className="badge text-bg-light border">
+            <span key={genero} className="badge badge-genero">
               {genero}
             </span>
           ))}
         </div>
 
         <div className="mt-auto d-flex align-items-center justify-content-between">
-          <span className="fs-5 fw-semibold">{formatarPreco(jogo.preco)}</span>
+          <span className="fs-5 preco">{formatarPreco(jogo.preco)}</span>
           {esgotado && <span className="badge text-bg-secondary">Esgotado</span>}
         </div>
       </div>
