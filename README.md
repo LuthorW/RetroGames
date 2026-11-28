@@ -19,6 +19,8 @@
 
 ## ✨ Como ficou
 
+- Inspiração visual: https://luthorw.github.io/LuthorCorp/?lang=pt
+
 <div align="center">
 
 <img src="docs/imagens/catalogo.jpg" alt="Catálogo de jogos com busca, filtros e cartões" width="820" />
